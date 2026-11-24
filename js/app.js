@@ -212,7 +212,8 @@
     lbDl.href = src;
     lbDl.setAttribute('download', `${p.id}.jpg`);
     syncLBFav();
-    document.documentElement.style.setProperty('--lb-thumb', `url("${thumbURL(p)}")`);
+    const absThumb = new URL(thumbURL(p), location.href).href;
+    document.documentElement.style.setProperty('--lb-thumb', `url("${absThumb}")`);
   }
 
   function syncLBFav() {
