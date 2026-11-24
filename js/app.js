@@ -84,6 +84,9 @@
 
   const galleryTop = () => $('#gallery').offsetTop - 0;
 
+  const BATCH = 48;
+  let shown = 0;
+
   function render() {
     if (onlyFavs) {
       view = DATA.photos.filter(p => favs.has(String(p.id)));
@@ -92,14 +95,27 @@
     } else {
       view = DATA.photos.filter(p => String(p.s) === String(activeScene));
     }
+    $('#counter').textContent = `${view.length} ${view.length === 1 ? 'foto' : 'fotos'}`;
+    grid.replaceChildren();
+    shown = 0;
+    fill();
+  }
+
+  function addBatch() {
+    const start = shown;
+    const end = Math.min(shown + BATCH, view.length);
+    if (start >= end) return;
     const frag = document.createDocumentFragment();
-    view.forEach((p, i) => {
+    for (let i = start; i < end; i++) {
+      const p = view[i];
       const t = document.createElement('div');
       t.className = 'tile' + (p.l ? ' wide' : '');
       t.dataset.i = i;
       const img = document.createElement('img');
       img.loading = 'lazy';
       img.decoding = 'async';
+      img.width = p.w;
+      img.height = p.h;
       img.src = thumbURL(p);
       img.alt = '';
       img.addEventListener('load', () => { img.classList.add('loaded'); t.classList.add('ready'); }, { once: true });
@@ -111,10 +127,30 @@
       fav.addEventListener('click', (e) => { e.stopPropagation(); toggleFav(p, fav); });
       t.append(img, fav);
       frag.append(t);
-    });
-    grid.replaceChildren(frag);
-    $('#counter').textContent = `${view.length} ${view.length === 1 ? 'foto' : 'fotos'}`;
+    }
+    shown = end;
+    grid.append(frag);
   }
+
+  // carga por lotes según la distancia al final del grid (sin depender de IntersectionObserver)
+  function fill() {
+    let guard = 0;
+    while (shown < view.length && guard++ < 40) {
+      const bottom = grid.getBoundingClientRect().bottom;
+      if (bottom - window.innerHeight > 1800) break;
+      addBatch();
+    }
+  }
+
+  let lastFill = 0;
+  const onScroll = () => {
+    const now = performance.now();
+    if (now - lastFill < 120) return;
+    lastFill = now;
+    fill();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
 
   grid.addEventListener('click', (e) => {
     const favBtn = e.target.closest('.fav');

@@ -7,7 +7,7 @@
 <meta name="description" content="Mapi - Daan · 3 Octubre 2026 · Fotos de Pixelart">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400&family=Barlow+Condensed:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="assets/favicon.png">
 </head>
@@ -19,7 +19,13 @@
     <img class="cover-logo" src="assets/logo.png" alt="Daan & Mapi">
   </div>
   <div class="cover-center">
-    <div class="cover-photo"><img src="assets/cover.jpg" alt="Mapi - Daan"></div>
+    <div class="cover-photo">
+      <picture>
+        <source type="image/webp" srcset="assets/cover-400.webp 400w, assets/cover-800.webp 800w, assets/cover-1200.webp 1200w"
+                sizes="(max-width:760px) 62vw, 34vw">
+        <img src="assets/cover.jpg" width="1600" height="2400" alt="Mapi - Daan" fetchpriority="high" decoding="async">
+      </picture>
+    </div>
   </div>
   <div class="cover-side cover-right">
     <h1 class="cover-title">Mapi - Daan</h1>
