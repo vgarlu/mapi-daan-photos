@@ -40,7 +40,8 @@ body:not(.is-cover) #cover{opacity:0;visibility:hidden}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,5px)}}
 @media (max-width:760px){
   #cover{grid-template-columns:1fr;grid-template-rows:1fr auto auto;padding:40px 20px 60px}
-  .cover-left{display:none}
+  .cover-left{display:flex;justify-content:center;position:absolute;top:26px;left:0;right:0;height:auto}
+  .cover-logo{width:142px}
   .cover-photo{height:auto;width:min(78vw,340px);aspect-ratio:2/3}
   .cover-right{flex-direction:column;align-items:center;text-align:center;padding:26px 0 0}
   .cover-sep{margin:14px auto}
