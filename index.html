@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mapi - Daan</title>
+<meta name="description" content="Mapi - Daan · 3 Octubre 2026 · Fotos de Pixelart">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="assets/favicon.png">
+</head>
+<body class="is-cover">
+
+<!-- COVER -->
+<section id="cover">
+  <div class="cover-side cover-left">
+    <img class="cover-logo" src="assets/logo.png" alt="Daan & Mapi">
+  </div>
+  <div class="cover-center">
+    <div class="cover-photo"><img src="assets/cover.jpg" alt="Mapi - Daan"></div>
+  </div>
+  <div class="cover-side cover-right">
+    <h1 class="cover-title">Mapi - Daan</h1>
+    <div class="cover-sep"></div>
+    <div class="cover-date">3 Octubre 2026</div>
+  </div>
+  <button class="cover-arrow" id="enter" aria-label="Entrar a la galería">
+    <svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 8l8 8 8-8" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square"/></svg>
+  </button>
+</section>
+
+<!-- HEADER -->
+<header id="hdr">
+  <a class="brand" href="#cover" aria-label="Daan & Mapi">
+    <img class="brand-logo" src="assets/logo.png" alt="Daan & Mapi">
+  </a>
+  <nav id="nav" aria-label="Escenas"></nav>
+  <div class="hdr-actions">
+    <button class="hdr-btn" id="fav-toggle" title="Favoritas" aria-label="Favoritas">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 20s-7-4.4-7-9.3A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.7C19 15.6 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- GALLERY -->
+<main id="gallery"><div id="grid" class="grid"></div><div id="counter" class="counter"></div></main>
+
+<!-- LIGHTBOX -->
+<div id="lb" class="lb" aria-hidden="true">
+  <button class="lb-close" id="lb-close" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" width="24" height="24"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1"/></svg>
+  </button>
+  <button class="lb-nav lb-prev" id="lb-prev" aria-label="Anterior">
+    <svg viewBox="0 0 24 24" width="30" height="30"><path d="M16 3L7 12l9 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+  </button>
+  <button class="lb-nav lb-next" id="lb-next" aria-label="Siguiente">
+    <svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 3l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+  </button>
+  <figure class="lb-stage">
+    <img id="lb-img" alt="">
+    <div class="lb-spin" id="lb-spin"></div>
+  </figure>
+  <div class="lb-bar">
+    <button class="lb-btn" id="lb-fav" aria-label="Favorita">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 20s-7-4.4-7-9.3A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.7C19 15.6 12 20 12 20z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+    </button>
+    <a class="lb-btn lb-dl" id="lb-dl" download aria-label="Descargar">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5M4 19h16" fill="none" stroke="currentColor" stroke-width="1.1"/></svg>
+      <span>Descargar</span>
+    </a>
+    <div class="lb-count" id="lb-count"></div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
