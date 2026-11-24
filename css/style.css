@@ -49,16 +49,19 @@ body:not(.is-cover) #cover{opacity:0;visibility:hidden}
 
 /* ---------- HEADER ---------- */
 #hdr{
-  position:fixed;top:0;left:0;right:0;height:var(--hdr-h);z-index:20;
+  position:fixed;top:0;left:0;right:0;min-height:var(--hdr-h);z-index:20;
   background:var(--white);display:flex;align-items:center;
-  padding:0 22px;gap:26px;
+  padding:9px 22px;gap:26px;flex-wrap:wrap;
   transition:transform .35s ease;
 }
 body:not(.is-cover) #hdr{transform:none}
 body.is-cover #hdr{transform:translateY(-100%)}
 .brand{display:flex;align-items:center;text-decoration:none;color:#000}
 .brand-logo{height:clamp(22px,2.2vw,28px);width:auto;display:block}
-#nav{display:flex;align-items:center;gap:clamp(14px,2.1vw,34px);flex:1;margin-left:clamp(10px,9vw,150px)}
+#nav{
+  display:flex;align-items:center;flex-wrap:wrap;flex:1;
+  gap:4px clamp(14px,1.8vw,28px);margin-left:clamp(10px,5vw,70px);
+}
 #nav a{
   text-decoration:none;color:var(--muted);font-size:16px;letter-spacing:2px;
   text-transform:uppercase;font-weight:400;white-space:nowrap;padding:4px 0;
@@ -66,26 +69,17 @@ body.is-cover #hdr{transform:translateY(-100%)}
 }
 #nav a:hover{color:#333}
 #nav a.active{color:#444}
-.more{position:relative;color:var(--muted);font-size:16px;letter-spacing:2px;text-transform:uppercase;
-  display:flex;align-items:center;gap:6px;white-space:nowrap}
-.more svg{opacity:.7}
-.more-menu{
-  position:absolute;top:calc(100% + 14px);left:-18px;background:#fff;
-  min-width:210px;padding:12px 0;box-shadow:0 6px 26px rgba(0,0,0,.10);
-  display:none;flex-direction:column;
-}
-.more.open .more-menu{display:flex}
-.more-menu a{padding:9px 22px;color:var(--muted)}
-.more-menu a.active,.more-menu a:hover{color:#444}
 .hdr-actions{margin-left:auto;display:flex;align-items:center;gap:16px;padding-left:22px;border-left:1px solid #e6e6e6;height:26px}
 .hdr-btn{color:#8a8a8a;display:grid;place-items:center;transition:color .2s}
 .hdr-btn:hover,.hdr-btn.on{color:#000}
 @media (max-width:900px){
-  #hdr{padding:0 14px;gap:12px}
-  #nav{gap:12px;margin-left:6px;overflow-x:auto;scrollbar-width:none}
-  #nav::-webkit-scrollbar{display:none}
-  #nav a,.more{font-size:13px;letter-spacing:1.4px}
-  .brand-logo{height:20px}
+  /* móvil: logo + corazón arriba, categorías en su propia fila (todas visibles) */
+  #hdr{padding:7px 12px 5px;gap:6px;row-gap:3px}
+  .brand{order:1}
+  .hdr-actions{order:2;margin-left:auto;padding-left:0;border-left:none;height:auto}
+  #nav{order:3;flex-basis:100%;margin-left:0;gap:2px 12px}
+  #nav a{font-size:11px;letter-spacing:.9px;padding:2px 0;line-height:1.25}
+  .brand-logo{height:18px}
 }
 
 /* ---------- GALLERY ---------- */

@@ -19,6 +19,11 @@
   let DATA = { scenes: [], photos: [] };
   let view = [];          // photos currently rendered
   let current = -1;       // lightbox index into view
+  const FIRST_SCENE_NAME = /retratos?/i;
+  const defaultScene = () => {
+    const s = (DATA.scenes || []).find(x => FIRST_SCENE_NAME.test(x.name));
+    return s ? String(s.id) : (DATA.scenes[0] ? String(DATA.scenes[0].id) : 'all');
+  };
   let activeScene = 'all';
   let onlyFavs = false;
 
@@ -31,45 +36,34 @@
   /* ---------- NAV ---------- */
   function buildNav() {
     const names = (n) => n.toUpperCase();
-    const first = DATA.scenes.slice(0, 5);
-    const rest = DATA.scenes.slice(5);
-    let html = `<a href="#gallery" data-scene="all" class="active">Galería</a>`;
-    first.forEach(s => { html += `<a href="#gallery" data-scene="${s.id}">${names(s.name)}</a>`; });
-    if (rest.length) {
-      html += `<div class="more" id="more"><span>Ver más</span>
-        <svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
-        <div class="more-menu">${rest.map(s => `<a href="#gallery" data-scene="${s.id}">${names(s.name)}</a>`).join('')}</div>
-      </div>`;
-    }
-    nav.innerHTML = html;
+    // Retratos primero; el resto conserva el orden original
+    const ordered = [...DATA.scenes].sort((a, b) =>
+      (FIRST_SCENE_NAME.test(b.name) ? 1 : 0) - (FIRST_SCENE_NAME.test(a.name) ? 1 : 0));
+    activeScene = defaultScene();
+    nav.innerHTML = ordered
+      .map(s => `<a href="#gallery" data-scene="${s.id}"${String(s.id) === activeScene ? ' class="active"' : ''}>${names(s.name)}</a>`)
+      .join('');
 
     nav.addEventListener('click', (e) => {
       const a = e.target.closest('a[data-scene]');
       if (!a) return;
       e.preventDefault();
       selectScene(a.dataset.scene);
-      $('#more')?.classList.remove('open');
     });
-    const more = $('#more');
-    if (more) {
-      more.addEventListener('click', (e) => {
-        if (e.target.closest('a')) return;
-        e.stopPropagation();
-        more.classList.toggle('open');
-      });
-      document.addEventListener('click', () => more.classList.remove('open'));
-    }
+    syncHdrHeight();
+  }
+
+  // el header crece si las categorías ocupan más de una fila
+  function syncHdrHeight() {
+    const h = $('#hdr');
+    if (!h) return;
+    const px = Math.round(h.getBoundingClientRect().height);
+    if (px > 0) document.documentElement.style.setProperty('--hdr-h', px + 'px');
   }
 
   function markActive(scene) {
     nav.querySelectorAll('a[data-scene]').forEach(a =>
       a.classList.toggle('active', String(a.dataset.scene) === String(scene)));
-    const more = $('#more');
-    if (more) {
-      const inMore = [...more.querySelectorAll('a[data-scene]')]
-        .some(a => String(a.dataset.scene) === String(scene));
-      more.style.color = inMore ? '#444' : '';
-    }
   }
 
   /* ---------- GRID ---------- */
@@ -150,7 +144,8 @@
     fill();
   };
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
+  window.addEventListener('resize', () => { syncHdrHeight(); onScroll(); }, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncHdrHeight);
 
   grid.addEventListener('click', (e) => {
     const favBtn = e.target.closest('.fav');
@@ -277,6 +272,7 @@
     .then(d => {
       DATA = d;
       buildNav();
+      syncHdrHeight();
       // la parrilla se construye al entrar en la galería (o si se llega por enlace directo)
       if (location.hash === '#gallery' || !document.body.classList.contains('is-cover')) render();
       if (location.hash === '#gallery') document.body.classList.remove('is-cover');
