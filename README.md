@@ -27,10 +27,27 @@ python3 build.py    # recalcula data/photos.json y las miniaturas desde images/
 GitHub Pages sirve la rama `main` en la raíz. El dominio vive en `CNAME` y el registro DNS es:
 
 ```
-photos  CNAME  vgarlu.github.io   (Cloudflare, DNS only)
+photos  CNAME  vgarlu.github.io   (Cloudflare, proxy activo)
 ```
 
-Para publicar cambios: `git add -A && git commit -m "..." && git push`.
+Cloudflare delante de Pages: SSL **Full (strict)**, Always Use HTTPS, TLS mín. 1.2, Brotli y HTTP/3.
+Cache Rules de la zona (`mapi-daan-2026.com`):
+
+| Ruta | Edge | Navegador |
+|---|---|---|
+| `/` y `*.html` | **sin caché** (cambios al instante) | — |
+| `/images/*`, `/thumbs/*` | 1 año | 30 días |
+| `/assets/*` | 1 mes | 7 días |
+
+Para publicar (commit + push + espera a Pages + purga del edge):
+
+```bash
+./deploy.sh "mensaje del commit"
+```
+
+La purga es necesaria porque las fotos se cachean un año: si se regeneran con el mismo
+nombre de fichero, hay que invalidar. Token en `~/.config/cloudflare/token` (chmod 600),
+zona `8ec8c270316aa81ddcf12ae2ecb0a498`.
 
 ## No incluido
 
