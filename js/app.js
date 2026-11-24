@@ -251,13 +251,49 @@
   });
 
   /* ---------- COVER ---------- */
-  const enterGallery = () => {
+  const enterGallery = (opts = {}) => {
     if (!grid.children.length && DATA.photos.length) render();
     document.body.classList.remove('is-cover');
     history.replaceState(null, '', '#gallery');
-    window.scrollTo({ top: galleryTop(), behavior: 'auto' });
+    // al deslizar no saltamos: el gesto sigue scrolleando de forma natural
+    if (!opts.keepScroll) window.scrollTo({ top: galleryTop(), behavior: 'auto' });
   };
   $('#enter').addEventListener('click', enterGallery);
+
+  /* Deslizar hacia arriba (o rueda/teclado) en la portada entra directo en la galería */
+  let touchY = null;
+  let leaving = false;
+  const goFromCover = () => {
+    if (leaving || !document.body.classList.contains('is-cover')) return;
+    leaving = true;
+    document.body.classList.add('cover-leaving');
+    enterGallery({ keepScroll: true });
+    setTimeout(() => { document.body.classList.remove('cover-leaving'); leaving = false; }, 520);
+  };
+
+  window.addEventListener('touchstart', (e) => {
+    touchY = (document.body.classList.contains('is-cover') && e.touches.length === 1)
+      ? e.touches[0].clientY : null;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (touchY === null) return;
+    if (touchY - e.touches[0].clientY > 22) goFromCover();   // dedo hacia arriba = bajar
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => { touchY = null; }, { passive: true });
+
+  window.addEventListener('wheel', (e) => {
+    if (e.deltaY > 10) goFromCover();
+  }, { passive: true });
+
+  window.addEventListener('keydown', (e) => {
+    if (!document.body.classList.contains('is-cover')) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      goFromCover();
+    }
+  });
   $('#cover').addEventListener('click', (e) => { if (!e.target.closest('.cover-photo')) enterGallery(); });
   document.querySelector('.brand').addEventListener('click', (e) => {
     e.preventDefault();
