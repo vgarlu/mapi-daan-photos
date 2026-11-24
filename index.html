@@ -16,7 +16,11 @@
 <!-- COVER -->
 <section id="cover">
   <div class="cover-side cover-left">
-    <img class="cover-logo" src="assets/logo.png" alt="Daan & Mapi">
+    <picture>
+      <source type="image/webp" srcset="assets/logo-240.webp 240w, assets/logo-480.webp 480w, assets/logo-960.webp 960w"
+              sizes="(max-width:760px) 142px, 215px">
+      <img class="cover-logo" src="assets/logo.png" width="835" height="200" alt="Daan & Mapi">
+    </picture>
   </div>
   <div class="cover-center">
     <div class="cover-photo">
@@ -40,7 +44,10 @@
 <!-- HEADER -->
 <header id="hdr">
   <a class="brand" href="#cover" aria-label="Daan & Mapi">
-    <img class="brand-logo" src="assets/logo.png" alt="Daan & Mapi">
+    <picture>
+      <source type="image/webp" srcset="assets/logo-240.webp 240w, assets/logo-480.webp 480w" sizes="130px">
+      <img class="brand-logo" src="assets/logo.png" width="835" height="200" alt="Daan & Mapi">
+    </picture>
   </a>
   <nav id="nav" aria-label="Escenas"></nav>
   <div class="hdr-actions">

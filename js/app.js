@@ -256,6 +256,7 @@
 
   /* ---------- COVER ---------- */
   const enterGallery = () => {
+    if (!grid.children.length && DATA.photos.length) render();
     document.body.classList.remove('is-cover');
     history.replaceState(null, '', '#gallery');
     window.scrollTo({ top: galleryTop(), behavior: 'auto' });
@@ -275,7 +276,8 @@
     .then(d => {
       DATA = d;
       buildNav();
-      render();
+      // la parrilla se construye al entrar en la galería (o si se llega por enlace directo)
+      if (location.hash === '#gallery' || !document.body.classList.contains('is-cover')) render();
       if (location.hash === '#gallery') document.body.classList.remove('is-cover');
     })
     .catch(err => {
